@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            text-align: center; /* Centraliza o texto da página */
+            padding-top: 50px;
+        }
+
+        /* Estilo para o visor do relógio */
+        #timer {
+            font-size: 64px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Cria um espaçamento limpo entre os botões */
+        }
+
+        button {
+            background-color: #e74c3c; 
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition-duration: 0.3s;
+        }
+
+        button:hover {
+            background-color: #c0392b; 
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Visor onde o tempo (ex: 25:00) vai aparecer -->
+    <div id="timer">25:00</div>
+
+    <!-- Botões de controle com IDs específicos -->
+    <div class="buttons-container">
+        <button id="btn-iniciar">Iniciar</button>    
+        <button id="btn-pausar">Pausar</button>    
+        <button id="btn-zerar">Zerar</button>
+    </div>
+
+<script>
+    const timerDisplay = document.getElementById("timer");
+    const startButton = document.getElementById("btn-iniciar");
+    const pauseButton = document.getElementById("btn-pausar");
+    const resetButton = document.getElementById("btn-zerar");
+
+    const initialTime = 25 * 60;
+    let remainingTime = initialTime;
+    let intervalId = null;
+
+    function updateDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        timerDisplay.textContent =
+            `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    startButton.addEventListener("click", () => {
+        if (intervalId !== null || remainingTime === 0) return;
+
+        intervalId = setInterval(() => {
+            remainingTime -= 1;
+            updateDisplay();
+
+            if (remainingTime === 0) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }, 1000);
+    });
+
+    pauseButton.addEventListener("click", () => {
+        clearInterval(intervalId);
+        intervalId = null;
+    });
+
+    resetButton.addEventListener("click", () => {
+        clearInterval(intervalId);
+        intervalId = null;
+        remainingTime = initialTime;
+        updateDisplay();
+    });
+</script>
+</body>
+</html>
